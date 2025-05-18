@@ -1,4 +1,6 @@
 .App {
+	background-color: #000;
+	min-height: 100vh;
 }
 
 .Grid {
@@ -25,4 +27,19 @@
 	border-radius: 6px;
 	background-color: #fff;
 	font-size: 1.25rem;
+}
+
+.ColorHistory {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 4px;
+	margin-top: 24px;
+}
+
+.ColorHistoryCell {
+	width: 24px;
+	height: 24px;
+	border-radius: 1000px;
+	border: 2px solid #fff;
 }

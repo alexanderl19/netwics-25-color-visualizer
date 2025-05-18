@@ -11,18 +11,19 @@ const App: Component = () => {
 		}>({}),
 		{ name: "colors" },
 	);
+	const [colorHistory, setColorHistory] = makePersisted(
+		createSignal<string[]>([]),
+		{ name: "colorHistory" },
+	);
 
 	const ws = createReconnectingWS("ws://localhost:3000");
-	// const addMessage = (msg: WSMessage) => {
-	// 	setMessages(messages.length, msg);
-	// 	setTimeout(() => messageBox()?.lastElementChild?.scrollIntoView(), 50);
-	// };
 	ws.addEventListener("message", (msg) => {
 		const message = String(msg.data);
 		const [command, color, id] = message.split(" ");
 		if (command === "color") {
+			setColorHistory([color, ...colorHistory()].slice(0, 100));
 			if (id) {
-				setColors({ ...colors, [id]: { color: color } });
+				setColors({ ...colors(), [id]: { color: color } });
 			}
 		}
 	});
@@ -41,7 +42,18 @@ const App: Component = () => {
 					}}
 				</For>
 			</div>
-			<div></div>
+			<div class={styles.ColorHistory}>
+				<For each={colorHistory()}>
+					{(color, i) => {
+						return (
+							<div
+								class={styles.ColorHistoryCell}
+								style={{ "background-color": color }}
+							/>
+						);
+					}}
+				</For>
+			</div>
 		</div>
 	);
 };
